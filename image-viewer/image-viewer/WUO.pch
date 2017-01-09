@@ -1,0 +1,60 @@
+
+//
+//  WUO.pch
+//  WUO
+//
+//  Created by mofeini on 17/1/1.
+//  Copyright © 2017年 com.test.demo. All rights reserved.
+//
+
+#ifndef WUO_pch
+#define WUO_pch
+
+//#import "UIImage+XYExtension.h"
+//#import "XYConstant.h"
+//#import <Masonry.h>
+//#import "UIView+XYExtension.h"
+//#import "NSString+MD5.h"
+//#import "NSObject+XYHUD.h"
+
+#define kScreenW  CGRectGetWidth([UIScreen mainScreen].bounds)
+#define kScreenH CGRectGetHeight([UIScreen mainScreen].bounds)
+#define kNavigationBarHeight 64
+#define kTabBarH 49
+
+/*************** 动态界面 ***************/
+#define SIZE_CONTENT_W kScreenW - SIZE_GAP_MARGIN * 2 - SIZE_HEADERWH - SIZE_GAP_PADDING
+#define SIZE_SEPARATORH 5       // 分割线高度
+#define SIZE_TOOLVIEWH 40       // 工具条高度
+#define SIZE_GAP_MARGIN 15      // 外间距
+#define SIZE_GAP_TOP 13         // 顶部间距
+#define SIZE_HEADERWH 40        // 头像尺寸
+#define SIZE_GAP_PADDING 10     // 内间距
+#define SIZE_PIC_BOTTOM 20      // 图片底部间距
+#define SIZE_GAP_SMALL 5        // 最小的间距
+#define SIZE_PICMARGIN 5        // 每张图片之间的间距
+#define SIZE_PICWH 80           // 单张图片宽度
+#define SIZE_FONT 17            // 字体大小
+#define SIZE_FONT_NAME (SIZE_FONT-3)
+#define SIZE_FONT_SUBTITLE (SIZE_FONT-8)
+#define SIZE_FONT_TITLE 15
+#define SIZE_FONT_CONTENT (SIZE_FONT_TITLE-3)
+#define kFontWithSize(s) [UIFont fontWithName:@"HelveticaNeue-Light" size:s]
+/*************** 动态界面 ***************/
+
+
+/*************** 颜色 ***************/
+#define kColor(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
+#define kTabBarItemTextColor_Sel [UIColor colorWithRed:71/255.0 green:70/255.0 blue:73/255.0 alpha:1.0]
+#define kRandomColor kColor(arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256), 1.0)
+#define kColorTitleText kColor(35, 35, 35, 1.0)             // title的颜色
+#define kColorContentText kColor(125, 125, 125, 1.0)        // content颜色
+#define kColorJobText kColor(94, 167, 86, 1.0)              // job颜色
+#define kColorCountText kColor(205, 205, 205, 1.0)          // 工具条的各种数量文本颜色
+#define kColorReadCountText kColor(180, 180, 180, 1.0)      // 阅读数量颜色
+#define kColorLightBlue kColor(106, 140, 181, 1.0)          // 浅蓝色
+/*************** 颜色 ***************/
+
+#define kLoginInfoPath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"loginInfo.plist"]
+
+#endif /* WUO_pch */
