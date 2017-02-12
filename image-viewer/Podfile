@@ -6,5 +6,5 @@ target 'image-viewer' do
   # use_frameworks!
 
   # Pods for image-viewer
-pod 'YYWebImage', '~> 1.0.5'
+#pod 'YYWebImage', '~> 1.0.5'
 end

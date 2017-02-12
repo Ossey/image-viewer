@@ -7,7 +7,9 @@
 //
 
 #import "XYImageView.h"
-#import <YYWebImage/YYWebImage.h>
+//#import <YYWebImage/YYWebImage.h>
+#import "UIImageView+WebCache.h"
+
 
 @interface XYImageView () <UIScrollViewDelegate>
 @property (nonatomic, assign) CGSize showPictureSize;
@@ -45,7 +47,14 @@
     self.maximumZoomScale = 2;
     
     // 添加 imageView
-    YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
+//    YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
+//    imageView.clipsToBounds = true;
+//    imageView.contentMode = UIViewContentModeScaleAspectFill;
+//    imageView.frame = self.bounds;
+//    imageView.userInteractionEnabled = true;
+//    _imageView = imageView;
+//    [self addSubview:imageView];
+    UIImageView *imageView = [[UIImageView alloc] init];
     imageView.clipsToBounds = true;
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.frame = self.bounds;
@@ -125,7 +134,8 @@
 
 - (void)setUrlString:(NSString *)urlString {
     _urlString = urlString;
-    [self.imageView yy_cancelCurrentImageRequest];
+//    [self.imageView yy_cancelCurrentImageRequest];
+    [self.imageView sd_cancelCurrentImageLoad];
     self.progressView.progress = 0.01;
     // 如果没有在执行动画，那么就显示出来
     if (self.isShowAnim == false) {
@@ -134,14 +144,15 @@
     }
     // 取消上一次的下载
     self.userInteractionEnabled = false;
-    [self.imageView yy_setImageWithURL:[NSURL URLWithString:urlString] placeholder:self.placeholderImage options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+    [self.imageView sd_setImageWithURL:[NSURL URLWithString:urlString] placeholderImage:self.placeholderImage options:SDWebImageHighPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
         CGFloat progress = (CGFloat)receivedSize / expectedSize ;
         self.progressView.progress = progress;
-    } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
         if (error != nil) {
             [self.progressView showError];
         }else {
-            if (stage == YYWebImageStageFinished) {
+            if (image) {
                 self.progressView.hidden = true;
                 self.userInteractionEnabled = true;
                 if (image != nil) {
@@ -156,7 +167,33 @@
                 self.progressView.progress = 1;
             }
         }
+
     }];
+//    [self.imageView yy_setImageWithURL:[NSURL URLWithString:urlString] placeholder:self.placeholderImage options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+//        
+//        CGFloat progress = (CGFloat)receivedSize / expectedSize ;
+//        self.progressView.progress = progress;
+//    } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+//        
+//        if (error != nil) {
+//            [self.progressView showError];
+//        }else {
+//            if (stage == YYWebImageStageFinished) {
+//                self.progressView.hidden = true;
+//                self.userInteractionEnabled = true;
+//                if (image != nil) {
+//                    // 计算图片的大小
+//                    [self setPictureSize:image.size];
+//                }else {
+//                    [self.progressView showError];
+//                }
+//                // 当下载完毕设置为1，因为如果直接走缓存的话，是不会走进度的 block 的
+//                // 解决在执行动画完毕之后根据值去判断是否要隐藏
+//                // 在执行显示的动画过程中：进度视图要隐藏，而如果在这个时候没有下载完成，需要在动画执行完毕之后显示出来
+//                self.progressView.progress = 1;
+//            }
+//        }
+//    }];
 }
 
 - (void)setContentSize:(CGSize)contentSize {

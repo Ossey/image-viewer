@@ -50,7 +50,7 @@ static id _instance = nil;
     return [XYImageViewer shareInstance] ;
 }
 
-#pragma mark - 
+#pragma mark - lazy
 - (XYImageBrowerView *)brower {
     if (_brower == nil) {
         _brower = [[XYImageBrowerView alloc] init];
@@ -83,14 +83,15 @@ static id _instance = nil;
 }
 
 
-- (void)prepareImageURLStrList:(NSArray<NSString *> *)URLStrList endView:(UIView *(^)(NSIndexPath *indexPath))endViewBlock {
+- (instancetype)prepareImageURLStrList:(NSArray<NSString *> *)URLStrList endView:(UIView *(^)(NSIndexPath *indexPath))endViewBlock {
     
     _urlStrList = URLStrList;
     _endViewBlock = endViewBlock;
+    return [XYImageViewer shareInstance];
 }
 
 
-- (void)prepareImages:(NSArray<NSString *> *)images endView:(UIView *(^)(NSIndexPath *))endViewBlock {
+- (instancetype)prepareImages:(NSArray<NSString *> *)images endView:(UIView *(^)(NSIndexPath *))endViewBlock {
     
     _images = images;
     _endViewBlock = endViewBlock;
@@ -103,6 +104,7 @@ static id _instance = nil;
     
     self.imageSizes = [tempArrM mutableCopy];
     tempArrM = nil;
+    return [XYImageViewer shareInstance];
 }
 
 
@@ -130,6 +132,7 @@ static id _instance = nil;
 - (UIImage *)imageBrowerView:(XYImageBrowerView *)imageBrowerView defaultImageForIndex:(NSInteger)index {
     return self.image;
 }
+
 
 @end
 

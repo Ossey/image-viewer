@@ -8,7 +8,8 @@
 
 #import "XYImageBrowerView.h"
 #import "XYImageView.h"
-#import <YYWebImage.h>
+//#import "YYWebImage.h"
+#import "UIImageView+WebCache.h"
 
 @interface XYImageBrowerView () <UIScrollViewDelegate, XYImageViewDelegate>
 /// 图片数组，3个 UIImageView。进行复用
@@ -122,11 +123,13 @@
     XYImageView *imageView = [[_pictureViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"index == %d", _currentPage]] firstObject];
     // 取消所有的下载
     for (XYImageView *imageView in _pictureViews) {
-        [imageView.imageView yy_cancelCurrentImageRequest];
+//        [imageView.imageView yy_cancelCurrentImageRequest];
+        [imageView.imageView sd_cancelCurrentImageLoad];
     }
     
     for (XYImageView *imageView in _readyToUsePictureViews) {
-        [imageView.imageView yy_cancelCurrentImageRequest];
+//        [imageView.imageView yy_cancelCurrentImageRequest];
+        [imageView.imageView sd_cancelCurrentImageLoad];
     }
     
     // 执行关闭动画
@@ -350,7 +353,7 @@
 }
 
 - (void)dealloc {
-    NSLog(@"图片视频已销毁");
+    NSLog(@"%s", __func__);
 }
 
 @end
