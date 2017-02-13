@@ -115,7 +115,7 @@
     /************ 加载本地照片，需要设置代理，不需要实现代理方法 ****************/
     
     /************ 第一种创建方式，加载网络照片，需要设置代理，不需要实现代理方法 ****************/
-    [[XYImageViewer shareInstance] prepareImageURLStrList:self.dynamicItem.imageUrls endView:^UIView *(NSIndexPath *indexPath) {
+    [[XYImageViewer shareInstance] prepareImageUrls:self.dynamicItem.imageUrls endView:^UIView *(NSIndexPath *indexPath) {
          return [collectionView cellForItemAtIndexPath:indexPath];
     }];
     [[XYImageViewer shareInstance] show:cell currentImgIndex:indexPath.row];
