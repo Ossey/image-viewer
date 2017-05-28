@@ -302,7 +302,7 @@
 
 - (UIScrollView *)scrollView {
     if (_scrollView == nil) {
-        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(-_imagesSpacing * 0.5, 0, self.frame.size.width + _imagesSpacing, self.frame.size.height)];
+        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(-self.imagesSpacing * 0.5, 0, self.frame.size.width + self.imagesSpacing, self.frame.size.height)];
         scrollView.showsVerticalScrollIndicator = false;
         scrollView.showsHorizontalScrollIndicator = false;
         scrollView.pagingEnabled = true;
