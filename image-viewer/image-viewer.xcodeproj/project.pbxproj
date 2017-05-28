@@ -36,11 +36,9 @@
 		18C861031E50C99500C615EA /* XYImageBrowerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C860FE1E50C99500C615EA /* XYImageBrowerView.m */; };
 		18C861041E50C99500C615EA /* XYImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C861001E50C99500C615EA /* XYImageView.m */; };
 		18C861051E50C99500C615EA /* XYImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C861021E50C99500C615EA /* XYImageViewer.m */; };
-		661AB2A11CEE2F686785CD0E /* libPods-image-viewer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C808CEC4305EE5DD1473B5B7 /* libPods-image-viewer.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		05B852CF402B2171C8619B20 /* Pods-image-viewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-image-viewer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-image-viewer/Pods-image-viewer.debug.xcconfig"; sourceTree = "<group>"; };
 		180213FD1E1DE6B1006605C2 /* image-viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "image-viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		180214011E1DE6B1006605C2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		180214031E1DE6B1006605C2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -96,8 +94,6 @@
 		18C861001E50C99500C615EA /* XYImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYImageView.m; sourceTree = "<group>"; };
 		18C861011E50C99500C615EA /* XYImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYImageViewer.h; sourceTree = "<group>"; };
 		18C861021E50C99500C615EA /* XYImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYImageViewer.m; sourceTree = "<group>"; };
-		1DE741A3B972CEB59E65F3B2 /* Pods-image-viewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-image-viewer.release.xcconfig"; path = "Pods/Target Support Files/Pods-image-viewer/Pods-image-viewer.release.xcconfig"; sourceTree = "<group>"; };
-		C808CEC4305EE5DD1473B5B7 /* libPods-image-viewer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-image-viewer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,7 +101,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				661AB2A11CEE2F686785CD0E /* libPods-image-viewer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,7 +112,6 @@
 			children = (
 				180213FF1E1DE6B1006605C2 /* image-viewer */,
 				180213FE1E1DE6B1006605C2 /* Products */,
-				5639476DBD5FD68AFFE8EC0C /* Pods */,
 				32E06E4789EAA230BA53C9C1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -234,18 +228,8 @@
 		32E06E4789EAA230BA53C9C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C808CEC4305EE5DD1473B5B7 /* libPods-image-viewer.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		5639476DBD5FD68AFFE8EC0C /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				05B852CF402B2171C8619B20 /* Pods-image-viewer.debug.xcconfig */,
-				1DE741A3B972CEB59E65F3B2 /* Pods-image-viewer.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -255,12 +239,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 180214141E1DE6B1006605C2 /* Build configuration list for PBXNativeTarget "image-viewer" */;
 			buildPhases = (
-				BEC3C0AAC88BD8EDECBE61B3 /* [CP] Check Pods Manifest.lock */,
 				180213F91E1DE6B1006605C2 /* Sources */,
 				180213FA1E1DE6B1006605C2 /* Frameworks */,
 				180213FB1E1DE6B1006605C2 /* Resources */,
-				D22D28F23E2C464F10D58128 /* [CP] Embed Pods Frameworks */,
-				11CEFD22E051066D7B70E215 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -319,54 +300,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		11CEFD22E051066D7B70E215 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-image-viewer/Pods-image-viewer-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BEC3C0AAC88BD8EDECBE61B3 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		D22D28F23E2C464F10D58128 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-image-viewer/Pods-image-viewer-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		180213F91E1DE6B1006605C2 /* Sources */ = {
@@ -512,7 +445,6 @@
 		};
 		180214151E1DE6B1006605C2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 05B852CF402B2171C8619B20 /* Pods-image-viewer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = NKW67GFDHM;
@@ -528,7 +460,6 @@
 		};
 		180214161E1DE6B1006605C2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1DE741A3B972CEB59E65F3B2 /* Pods-image-viewer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = NKW67GFDHM;

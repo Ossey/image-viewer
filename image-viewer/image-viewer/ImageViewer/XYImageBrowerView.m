@@ -8,11 +8,10 @@
 
 #import "XYImageBrowerView.h"
 #import "XYImageView.h"
-//#import "YYWebImage.h"
 #import "UIImageView+WebCache.h"
 
 @interface XYImageBrowerView () <UIScrollViewDelegate, XYImageViewDelegate>
-/// 图片数组，3个 UIImageView。进行复用
+/// 图片数组，3个 UIImageView, 进行复用
 @property (nonatomic, strong) NSMutableArray<XYImageView *> *pictureViews;
 /// 准备待用的图片视图（缓存）
 @property (nonatomic, strong) NSMutableArray<XYImageView *> *readyToUsePictureViews;
@@ -26,6 +25,7 @@
 @property (nonatomic, weak) UILabel *pageTextLabel;
 /// 消失的 tap 手势
 @property (nonatomic, weak) UITapGestureRecognizer *dismissTapGes;
+
 @end
 
 @implementation XYImageBrowerView
@@ -118,22 +118,23 @@
 
 - (void)dismiss {
     UIView *endView = [_delegate imageBrowerView:self viewForIndex:_currentPage];
-    CGRect rect = [endView convertRect:endView.bounds toView:nil];
     // 取到当前显示的 pictureView
     XYImageView *imageView = [[_pictureViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"index == %d", _currentPage]] firstObject];
     // 取消所有的下载
     for (XYImageView *imageView in _pictureViews) {
-//        [imageView.imageView yy_cancelCurrentImageRequest];
         [imageView.imageView sd_cancelCurrentImageLoad];
     }
     
     for (XYImageView *imageView in _readyToUsePictureViews) {
-//        [imageView.imageView yy_cancelCurrentImageRequest];
         [imageView.imageView sd_cancelCurrentImageLoad];
     }
     
+    CGRect endRect = [endView convertRect:endView.bounds toView:nil];
+    if (!endView) {
+        endRect = CGRectMake(CGRectGetWidth([UIScreen mainScreen].bounds)*0.5, CGRectGetHeight([UIScreen mainScreen].bounds)*0.5, 0, 0);
+    }
     // 执行关闭动画
-    [imageView animationDismissWithToRect:rect duration:self.duration animationBlock:^{
+    [imageView animationDismissWithToRect:endRect duration:self.duration animationBlock:^{
         self.backgroundColor = [UIColor clearColor];
         self.pageTextLabel.alpha = 0;
     } completionBlock:^{
@@ -349,7 +350,7 @@
 - (void)imageView:(XYImageView *)imageView scale:(CGFloat)scale {
     
     self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1 - scale];
-
+    
 }
 
 - (void)dealloc {

@@ -17,7 +17,7 @@
 
 
 /**
- * @explain 获取对应索引的视图
+ *  获取对应索引的视图
  *
  * @param   imageBrowerView  图片浏览器
  * @param   index          索引
@@ -28,7 +28,7 @@
 
 
 /**
- * @explain 获取所有要的高质量图片地址字符串
+ *  获取所有要的高质量图片地址字符串
  *
  * @return  图片的 url 字符串数组
  * 注意: 当执行了获取图片url数组的方法，就不再执行获取单张图片url的方法
@@ -39,7 +39,7 @@
 @optional
 
 /**
- * @explain 获取对应索引的图片大小
+ *  获取对应索引的图片大小
  *
  * @param   imageBrowerView  图片浏览器
  * @return  图片大小
@@ -49,7 +49,7 @@
 
 
 /**
- * @explain 获取对应索引默认图片，可以是占位图片，可以是缩略图
+ *  获取对应索引默认图片，可以是占位图片，可以是缩略图
  *
  * @param   imageBrowerView  图片浏览器
  * @param   index          索引
@@ -66,7 +66,7 @@
  */
 
 /**
- * @explain 获取要显示的默认图片数组，可以是占位图片，可以是缩略图
+ *  获取要显示的默认图片数组，可以是占位图片，可以是缩略图
  *
  * @param   imageBrowerView  图片浏览器
  * @return  图片名称 字符串数组
@@ -75,7 +75,7 @@
 
 
 /**
- * @explain 获取对应索引的高质量图片地址字符串
+ *  获取对应索引的高质量图片地址字符串
  *
  * @param   imageBrowerView  图片浏览器
  * @param   index          索引
@@ -125,7 +125,7 @@
 @property (nonatomic, copy) void (^dismissCallBack)();
 
 /**
- * @explain 显示图片浏览器
+ *  显示图片浏览器
  *
  * @param   fromView  用户点击的视图，图片这个视图开始做动画，并打开图片浏览器
  * @param   picturesCount  图片的数量
@@ -137,8 +137,6 @@
  让图片浏览器消失
  */
 - (void)dismiss;
-
-
 
 
 @end
