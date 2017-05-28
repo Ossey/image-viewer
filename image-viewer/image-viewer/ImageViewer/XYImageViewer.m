@@ -12,7 +12,7 @@
 @interface XYImageViewer () <XYImageBrowerViewDelegate>
 
 /// 图片浏览器视图
-@property (nonatomic, strong) XYImageBrowerView *brower;
+@property (nonatomic, strong) XYImageBrowerView *browerView;
 /// 图片的尺寸数组，当加载本地图片时可用，网络请求不需要
 @property (nonatomic, strong) NSArray* imageSizes;
 /// 获取点击的当前视图
@@ -27,32 +27,24 @@
 @property (nonatomic, strong) NSArray<NSString *> *urlStrList;
 /// 当外界调用了prepareImageURLList时为YES，调用prepareImages时为NO
 @property (nonatomic, assign, getter=isRequestFromNetwork) BOOL requestFromNetwork;
+@property (nonatomic, strong) NSArray<NSString *> *pageTextList;
 
 @end
 
 @implementation XYImageViewer
-@synthesize backgroundColor = _backgroundColor;
-
-#pragma mark - 单例设计
-static id _instance = nil;
-+ (instancetype)shareInstance {
-    static dispatch_once_t onceToken ;
-    dispatch_once(&onceToken, ^{
-        _instance = [[super allocWithZone:NULL] init] ;
-    }) ;
-    return _instance ;
-}
-
-+ (id)allocWithZone:(struct _NSZone *)zone {
-    return [XYImageViewer shareInstance] ;
-}
-
-- (id)copyWithZone:(struct _NSZone *)zone {
-    return [XYImageViewer shareInstance] ;
-}
 
 #pragma mark - 公开方法
-- (__kindof UIView *)show:(UIView *)fromView currentImgIndex:(NSInteger)currentImgIndex {
+
+- (XYImageBrowerView *)showWithImageURLList:(NSArray<NSString *> *)URLList
+                               currentIndex:(NSInteger)currentIndex
+                                   fromView:(UIView *)fromView
+                                    endView:(UIView *(^)(NSIndexPath *indexPath))endViewBlock {
+    
+    XYImageViewer *viewr = [XYImageViewer prepareImageURLList:URLList pageTextList:nil endView:endViewBlock];
+    return [viewr show:fromView currentIndex:currentIndex];
+}
+
+- (__kindof UIView *)show:(UIView *)fromView currentIndex:(NSInteger)currentImgIndex {
     
     NSInteger imgCount = 0;
     if (self.isRequestFromNetwork == YES) {
@@ -62,27 +54,36 @@ static id _instance = nil;
         /// 加载本地图片
         imgCount = self.images.count;
     }
-    [self.brower showFromView:fromView picturesCount:imgCount currentPictureIndex:currentImgIndex];
+    [self.browerView showFromView:fromView picturesCount:imgCount currentPictureIndex:currentImgIndex];
     
-    return self.brower;
+    return self.browerView;
 }
 
 
-- (XYImageViewer *)prepareImageUrls:(NSArray<NSString *> *)urls endView:(UIView *(^)(NSIndexPath *indexPath))endViewBlock {
++ (instancetype)prepareImageURLList:(NSArray<NSString *> *)URLList
+                              pageTextList:(NSArray<NSString *> *)pageTextList
+                               endView:(UIView *(^)(NSIndexPath *indexPath))endViewBlock {
     
-    _urlStrList = urls;
-    _endViewBlock = endViewBlock;
-    _requestFromNetwork = YES;
+    XYImageViewer *imageViewr = [XYImageViewer new];
     
-    return [XYImageViewer shareInstance];
+    imageViewr.urlStrList = URLList;
+    imageViewr.endViewBlock = endViewBlock;
+    imageViewr.requestFromNetwork = YES;
+    imageViewr.pageTextList = pageTextList;
+    
+    return imageViewr;
 }
 
 
-- (XYImageViewer *)prepareImages:(NSArray<NSString *> *)images endView:(UIView *(^)(NSIndexPath *))endViewBlock {
++ (instancetype)prepareImages:(NSArray<NSString*> *)images
+                 pageTextList:(NSArray<NSString *> *)pageTextList
+                      endView:(UIView *(^)(NSIndexPath *indexPath))endViewBlock {
     
-    _images = images;
-    _endViewBlock = endViewBlock;
-    _requestFromNetwork = NO;
+    XYImageViewer *imageViewr = [XYImageViewer new];
+    imageViewr.images = images;
+    imageViewr.endViewBlock = endViewBlock;
+    imageViewr.requestFromNetwork = NO;
+    imageViewr.pageTextList = pageTextList;
     
     NSMutableArray *tempArrM = [NSMutableArray arrayWithCapacity:1];
     for (NSString *imageName in images) {
@@ -90,9 +91,9 @@ static id _instance = nil;
         [tempArrM addObject:[NSValue valueWithCGSize:image.size]];
     }
     
-    self.imageSizes = [tempArrM mutableCopy];
+    imageViewr.imageSizes = [tempArrM mutableCopy];
     tempArrM = nil;
-    return [XYImageViewer shareInstance];
+    return imageViewr;
 }
 
 
@@ -121,27 +122,38 @@ static id _instance = nil;
     return self.image;
 }
 
+- (NSString *)imageBrowerView:(XYImageBrowerView *)imageBrowerView pageTextAtIndex:(NSInteger)index {
+    if (index < self.pageTextList.count) {
+        return self.pageTextList[index];
+    }
+    return nil;
+}
 
 #pragma mark - lazy
-- (XYImageBrowerView *)brower {
-    if (_brower == nil) {
-        _brower = [[XYImageBrowerView alloc] init];
-        _brower.duration = 0.15;
-        _brower.delegate = self;
-        [_brower setDismissCallBack:^{
-            _brower = nil;
+- (XYImageBrowerView *)browerView {
+    if (_browerView == nil) {
+        _browerView = [[XYImageBrowerView alloc] init];
+        _browerView.duration = 0.15;
+        _browerView.delegate = self;
+        [_browerView setDismissCallBack:^{
+            _browerView = nil;
             _fromView = nil;
             _urlStrList = nil;
             _image = nil;
             _endViewBlock = nil;
         }];
     }
-    return _brower;
+    return _browerView;
 }
 
 - (BOOL)isRequestFromNetwork {
     return _requestFromNetwork ?: NO;
 }
+
+- (void)dealloc {
+    NSLog(@"%s", __func__);
+}
+
 @end
 
 

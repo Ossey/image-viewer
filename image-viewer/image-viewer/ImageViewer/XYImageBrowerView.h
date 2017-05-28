@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@class XYImageBrowerView;
+@class XYImageBrowerView, XYImagePageLabel;
 
 @protocol XYImageBrowerViewDelegate <NSObject>
 
@@ -83,45 +83,38 @@
  */
 - (NSString *)imageBrowerView:(XYImageBrowerView *)imageBrowerView highQualityUrlStringForIndex:(NSInteger)index;
 
+/**
+ *  获取对应索引的图片上的文本
+ *
+ * @param   imageBrowerView  图片浏览器
+ * @param   index          索引
+ * @return  图片显示的 字符串, 默认为当前页码/总页码
+ */
+- (NSString *)imageBrowerView:(XYImageBrowerView *)imageBrowerView pageTextAtIndex:(NSInteger)index;
+
 @end
+
 @interface XYImageBrowerView : UIView
 
 
 @property (nonatomic, weak) id<XYImageBrowerViewDelegate> delegate;
 
-/**
- 图片之间的间距，默认： 20
- */
-@property (nonatomic, assign) CGFloat betweenImagesSpacing;
+/// 图片之间的间距，默认20
+@property (nonatomic, assign) CGFloat imagesSpacing;
 
-/**
- 页数文字中心点，默认：居中，中心 y 距离底部 20
- */
-@property (nonatomic, assign) CGPoint pageTextCenter;
+/// 每个页面显示文本的控件
+@property (nonatomic, weak, readonly) XYImagePageLabel *pageTextLabel;
 
-/**
- 页数文字字体，默认：系统字体，16号
- */
-@property (nonatomic, strong) UIFont *pageTextFont;
 
-/**
- 页数文字颜色，默认：白色
- */
-@property (nonatomic, strong) UIColor *pageTextColor;
-
-/**
- 长按图片要执行的事件，将长按图片索引回调
- */
+/// 长按图片要执行的事件，将长按图片索引回调
 @property (nonatomic, copy) void(^longPressBlock)(NSInteger);
 
-/**
- 动画执行的时间, 默认为0.25秒
- */
+
+/// 动画执行的时间, 默认为0.25秒
 @property (nonatomic, assign) CGFloat duration;
 
-/**
- 关闭图片浏览器时，动画消失后的回调
- */
+
+/// 关闭图片浏览器时，动画消失后的回调
 @property (nonatomic, copy) void (^dismissCallBack)();
 
 /**
@@ -133,10 +126,12 @@
  */
 - (void)showFromView:(UIView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex;
 
-/**
- 让图片浏览器消失
- */
+/// 让图片浏览器消失
 - (void)dismiss;
+
+@end
+
+@interface XYImagePageLabel : UILabel
 
 
 @end

@@ -14,66 +14,40 @@
 /// 图片数组，3个 UIImageView, 进行复用
 @property (nonatomic, strong) NSMutableArray<XYImageView *> *pictureViews;
 /// 准备待用的图片视图（缓存）
-@property (nonatomic, strong) NSMutableArray<XYImageView *> *readyToUsePictureViews;
-/// 图片张数
+@property (nonatomic, strong) NSMutableArray<XYImageView *> *prepareUsePictureViews;
 @property (nonatomic, assign) NSInteger picturesCount;
-/// 当前页数
 @property (nonatomic, assign) NSInteger currentPage;
-/// 界面子控件
 @property (nonatomic, weak) UIScrollView *scrollView;
-/// 页码文字控件
-@property (nonatomic, weak) UILabel *pageTextLabel;
+@property (nonatomic, weak) XYImagePageLabel *pageTextLabel;
+
 /// 消失的 tap 手势
 @property (nonatomic, weak) UITapGestureRecognizer *dismissTapGes;
+
 
 @end
 
 @implementation XYImageBrowerView
 
+@synthesize imagesSpacing = _imagesSpacing;
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setupUI];
+        [self setup];
     }
     return self;
 }
 
-- (void)setupUI {
+- (void)setup {
+    
     self.frame = [UIScreen mainScreen].bounds;
     self.backgroundColor = [UIColor clearColor];
     
-    // 设置默认属性
-    self.betweenImagesSpacing = 20;
-    self.pageTextFont = [UIFont systemFontOfSize:16];
-    self.pageTextCenter = CGPointMake(self.bounds.size.width * 0.5, self.bounds.size.height - 20);
-    self.pageTextColor = [UIColor whiteColor];
-    // 初始化数组
-    self.pictureViews = [NSMutableArray array];
-    self.readyToUsePictureViews = [NSMutableArray array];
-    
-    // 初始化 scrollView
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(-_betweenImagesSpacing * 0.5, 0, self.frame.size.width + _betweenImagesSpacing, self.frame.size.height)];
-    scrollView.showsVerticalScrollIndicator = false;
-    scrollView.showsHorizontalScrollIndicator = false;
-    scrollView.pagingEnabled = true;
-    scrollView.delegate = self;
-    [self addSubview:scrollView];
-    self.scrollView = scrollView;
-    
-    // 初始化label
-    UILabel *label = [[UILabel alloc] init];
-    label.alpha = 0;
-    label.textColor = self.pageTextColor;
-    label.center = self.pageTextCenter;
-    label.font = self.pageTextFont;
-    [self addSubview:label];
-    self.pageTextLabel = label;
-    
     // 添加手势事件
-    UILongPressGestureRecognizer *longGes = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+    UILongPressGestureRecognizer *longGes = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOnSelf:)];
     [self addGestureRecognizer:longGes];
-    UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGes:)];
+    UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureOnSelf:)];
     [self addGestureRecognizer:tapGes];
     self.dismissTapGes = tapGes;
 }
@@ -125,7 +99,7 @@
         [imageView.imageView sd_cancelCurrentImageLoad];
     }
     
-    for (XYImageView *imageView in _readyToUsePictureViews) {
+    for (XYImageView *imageView in self.prepareUsePictureViews) {
         [imageView.imageView sd_cancelCurrentImageLoad];
     }
     
@@ -145,68 +119,26 @@
     }];
 }
 
-#pragma mark - 监听事件
+#pragma mark - Events
 
-- (void)tapGes:(UITapGestureRecognizer *)ges {
+- (void)tapGestureOnSelf:(UITapGestureRecognizer *)ges {
     [self dismiss];
 }
 
-- (void)longPress:(UILongPressGestureRecognizer *)ges {
-    if (ges.state == UIGestureRecognizerStateEnded) {
+- (void)longPressOnSelf:(UILongPressGestureRecognizer *)longPre {
+    
+    if (longPre.state == UIGestureRecognizerStateEnded) {
         if (self.longPressBlock) {
             self.longPressBlock(_currentPage);
         }
     }
 }
 
-#pragma mark - 私有方法
+#pragma mark - Private Methods
 
-- (void)setPageTextFont:(UIFont *)pageTextFont {
-    _pageTextFont = pageTextFont;
-    self.pageTextLabel.font = pageTextFont;
-}
-
-- (void)setPageTextColor:(UIColor *)pageTextColor {
-    _pageTextColor = pageTextColor;
-    self.pageTextLabel.textColor = pageTextColor;
-}
-
-- (void)setPageTextCenter:(CGPoint)pageTextCenter {
-    _pageTextCenter = pageTextCenter;
-    [self.pageTextLabel sizeToFit];
-    self.pageTextLabel.center = pageTextCenter;
-}
-
-- (void)setBetweenImagesSpacing:(CGFloat)betweenImagesSpacing {
-    _betweenImagesSpacing = betweenImagesSpacing;
-    self.scrollView.frame = CGRectMake(-_betweenImagesSpacing * 0.5, 0, self.frame.size.width + _betweenImagesSpacing, self.frame.size.height);
-}
-
-- (void)setCurrentPage:(NSInteger)currentPage {
-    if (_currentPage == currentPage) {
-        return;
-    }
-    NSUInteger oldValue = _currentPage;
-    _currentPage = currentPage;
-    [self removeViewToReUse];
-    [self setPageText:currentPage];
-    // 如果新值大于旧值
-    if (currentPage > oldValue) {
-        // 往右滑，设置右边的视图
-        if (currentPage + 1 < _picturesCount) {
-            [self setPictureViewForIndex:currentPage + 1];
-        }
-    }else {
-        // 往左滑，设置左边的视图
-        if (currentPage > 0) {
-            [self setPictureViewForIndex:currentPage - 1];
-        }
-    }
-    
-}
 
 /**
- 设置pitureView到指定位置
+ 设置ImageView到指定位置
  
  @param index 索引
  
@@ -214,7 +146,7 @@
  */
 - (XYImageView *)setPictureViewForIndex:(NSInteger)index {
     [self removeViewToReUse];
-    XYImageView *view = [self getPhotoView];
+    XYImageView *view = [self createImageView];
     view.index = index;
     CGRect frame = view.frame;
     frame.size = self.frame.size;
@@ -287,19 +219,19 @@
  
  @return 图片控件
  */
-- (XYImageView *)getPhotoView {
+- (XYImageView *)createImageView {
     XYImageView *view;
-    if (_readyToUsePictureViews.count == 0) {
+    if (!self.prepareUsePictureViews.count) {
         view = [XYImageView new];
         // 手势事件冲突处理
         [self.dismissTapGes requireGestureRecognizerToFail:view.imageView.gestureRecognizers.firstObject];
         view.imageViewDelegate = self;
     }else {
-        view = [_readyToUsePictureViews firstObject];
-        [_readyToUsePictureViews removeObjectAtIndex:0];
+        view = [self.prepareUsePictureViews firstObject];
+        [self.prepareUsePictureViews removeObjectAtIndex:0];
     }
-    [_scrollView addSubview:view];
-    [_pictureViews addObject:view];
+    [[self scrollView] addSubview:view];
+    [[self pictureViews] addObject:view];
     return view;
 }
 
@@ -319,19 +251,21 @@
         if (abs((int)view.index - (int)_currentPage) == 2){
             [tempArray addObject:view];
             [view removeFromSuperview];
-            [_readyToUsePictureViews addObject:view];
+            [self.prepareUsePictureViews addObject:view];
         }
     }
     [self.pictureViews removeObjectsInArray:tempArray];
 }
 
-/**
- 设置文字，并设置位置
- */
+/// 设置文字，并设置位置
 - (void)setPageText:(NSUInteger)index {
-    _pageTextLabel.text = [NSString stringWithFormat:@"%zd / %zd", index + 1, self.picturesCount];
-    [_pageTextLabel sizeToFit];
-    _pageTextLabel.center = self.pageTextCenter;
+    NSString *text = nil;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(imageBrowerView:pageTextAtIndex:)]) {
+        text = [self.delegate imageBrowerView:self pageTextAtIndex:index];
+    }
+    [self pageTextLabel].text = text ?: [NSString stringWithFormat:@"%zd / %zd", index + 1, self.picturesCount];
+    [[self pageTextLabel] sizeToFit];
+    [self pageTextLabel].center = self.pageTextLabel.center;
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -341,7 +275,7 @@
     self.currentPage = page;
 }
 
-#pragma mark - ESPictureViewDelegate
+#pragma mark - XYImageViewDelegate
 
 - (void)imageViewTouch:(XYImageView *)imageView {
     [self dismiss];
@@ -353,8 +287,117 @@
     
 }
 
+#pragma mark - set \ get
+
+- (XYImagePageLabel *)pageTextLabel {
+    if (_pageTextLabel == nil) {
+        XYImagePageLabel *label = [[XYImagePageLabel alloc] init];
+        label.alpha = 0.0;
+        [self addSubview:label];
+        label.center = CGPointMake(self.bounds.size.width * 0.5, self.bounds.size.height - 20);
+        _pageTextLabel = label;
+    }
+    return _pageTextLabel;
+}
+
+- (UIScrollView *)scrollView {
+    if (_scrollView == nil) {
+        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(-_imagesSpacing * 0.5, 0, self.frame.size.width + _imagesSpacing, self.frame.size.height)];
+        scrollView.showsVerticalScrollIndicator = false;
+        scrollView.showsHorizontalScrollIndicator = false;
+        scrollView.pagingEnabled = true;
+        scrollView.delegate = self;
+        [self addSubview:scrollView];
+        _scrollView = scrollView;
+    }
+    return _scrollView;
+}
+
+
+- (CGFloat)imagesSpacing {
+    return _imagesSpacing ?: 20;
+}
+
+- (void)setImagesSpacing:(CGFloat)imagesSpacing {
+    _imagesSpacing = imagesSpacing;
+    self.scrollView.frame = CGRectMake(-_imagesSpacing * 0.5, 0, self.frame.size.width + _imagesSpacing, self.frame.size.height);
+}
+
+- (void)setCurrentPage:(NSInteger)currentPage {
+    if (_currentPage == currentPage) {
+        return;
+    }
+    NSUInteger oldValue = _currentPage;
+    _currentPage = currentPage;
+    [self removeViewToReUse];
+    [self setPageText:currentPage];
+    // 如果新值大于旧值
+    if (currentPage > oldValue) {
+        // 往右滑，设置右边的视图
+        if (currentPage + 1 < _picturesCount) {
+            [self setPictureViewForIndex:currentPage + 1];
+        }
+    }else {
+        // 往左滑，设置左边的视图
+        if (currentPage > 0) {
+            [self setPictureViewForIndex:currentPage - 1];
+        }
+    }
+    
+}
+
+- (NSMutableArray<XYImageView *> *)prepareUsePictureViews {
+    if (!_prepareUsePictureViews) {
+        _prepareUsePictureViews = [NSMutableArray arrayWithCapacity:0];
+    }
+    return _prepareUsePictureViews;
+}
+
+- (NSMutableArray<XYImageView *> *)pictureViews {
+    if (!_pictureViews) {
+        _pictureViews = [NSMutableArray arrayWithCapacity:0];
+    }
+    return _pictureViews;
+}
+
 - (void)dealloc {
     NSLog(@"%s", __func__);
+}
+
+@end
+
+
+@implementation XYImagePageLabel
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setup];
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self) {
+        [self setup];
+    }
+    return self;
+}
+
+- (void)setup {
+    
+    self.textColor = [UIColor whiteColor];
+    self.font = [UIFont systemFontOfSize:16];
+}
+
+
+
+- (void)setCenter:(CGPoint)center {
+    [super setCenter:center];
+    [self sizeToFit];
 }
 
 @end

@@ -9,8 +9,8 @@
 #import "XYImageView.h"
 #import "UIImageView+WebCache.h"
 
-
 @interface XYImageView () <UIScrollViewDelegate>
+
 @property (nonatomic, assign) CGSize showPictureSize;
 
 @property (nonatomic, assign) BOOL doubleClicks;
@@ -24,6 +24,9 @@
 @property (nonatomic, weak) XYImageProgressView *progressView;
 
 @property (nonatomic, assign, getter=isShowAnim) BOOL showAnim;
+
+@property (nonatomic, strong) UIImageView *imageView;
+
 @end
 
 @implementation XYImageView
@@ -44,24 +47,7 @@
     self.showsHorizontalScrollIndicator = false;
     self.showsVerticalScrollIndicator = false;
     self.maximumZoomScale = 2;
-    
-    UIImageView *imageView = [[UIImageView alloc] init];
-    imageView.clipsToBounds = true;
-    imageView.contentMode = UIViewContentModeScaleAspectFill;
-    imageView.frame = self.bounds;
-    imageView.userInteractionEnabled = true;
-    _imageView = imageView;
-    [self addSubview:imageView];
-    
-    // 添加进度view
-    XYImageProgressView *progressView = [[XYImageProgressView alloc] init];
-    [self addSubview:progressView];
-    self.progressView = progressView;
-    
-    // 添加监听事件
-    UITapGestureRecognizer *doubleTapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleClick:)];
-    doubleTapGes.numberOfTapsRequired = 2;
-    [imageView addGestureRecognizer:doubleTapGes];
+
 }
 
 #pragma mark - 外部方法
@@ -219,7 +205,7 @@
 
 #pragma mark - 监听方法
 
-- (void)doubleClick:(UITapGestureRecognizer *)ges {
+- (void)doubleClickOnImageView:(UITapGestureRecognizer *)ges {
     CGFloat newScale = 2;
     if (_doubleClicks) {
         newScale = 1;
@@ -304,6 +290,32 @@
     }
 }
 
+#pragma mark - set \ get
+
+- (UIImageView *)imageView {
+    if (_imageView == nil) {
+        UIImageView *imageView = [[UIImageView alloc] init];
+        imageView.clipsToBounds = true;
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.frame = self.bounds;
+        imageView.userInteractionEnabled = true;
+        _imageView = imageView;
+        [self addSubview:imageView];
+        UITapGestureRecognizer *doubleTapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleClickOnImageView:)];
+        doubleTapGes.numberOfTapsRequired = 2;
+        [imageView addGestureRecognizer:doubleTapGes];
+    }
+    return _imageView;
+}
+
+- (XYImageProgressView *)progressView {
+    if (!_progressView) {
+        XYImageProgressView *progressView = [[XYImageProgressView alloc] init];
+        [self addSubview:progressView];
+        _progressView = progressView;
+    }
+    return _progressView;
+}
 
 @end
 

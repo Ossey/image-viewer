@@ -115,10 +115,24 @@
     /************ 加载本地照片，需要设置代理，不需要实现代理方法 ****************/
     
     /************ 第一种创建方式，加载网络照片，需要设置代理，不需要实现代理方法 ****************/
-    [[XYImageViewer shareInstance] prepareImageUrls:self.dynamicItem.imageUrls endView:^UIView *(NSIndexPath *indexPath) {
-         return [collectionView cellForItemAtIndexPath:indexPath];
+    
+    XYImageViewer *viewr = [XYImageViewer prepareImageURLList:self.dynamicItem.imageUrls pageTextList:@[@"122", @"123", @"145", @"sasd"] endView:^UIView *(NSIndexPath *indexPath) {
+        return [collectionView cellForItemAtIndexPath:indexPath];
     }];
-    [[XYImageViewer shareInstance] show:cell currentImgIndex:indexPath.row];
+    
+    viewr.browerView.pageTextLabel.center = CGPointMake(100, 70);
+    
+    [viewr show:cell currentIndex:indexPath.row];
+
+    
+//    XYImageBrowerView *bVie = [[XYImageViewer shareInstance] showWithImageURLList:self.dynamicItem.imageUrls currentIndex:indexPath.row fromView:cell endView:^UIView *(NSIndexPath *indexPath) {
+//        return [collectionView cellForItemAtIndexPath:indexPath];
+//    }];
+//    
+//    bVie.pageTextLabel.center = CGPointMake(80, 80);
+//    bVie.pageTextBlock = ^NSString *(NSInteger idx) {
+//      return @"gjhkl;'kjhgfdhjkl;jlhkgfgjkl;";
+//    };
     
 
     /************ 第一种创建方式，需要设置代理，不需要实现代理方法 ****************/
