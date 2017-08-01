@@ -20,8 +20,8 @@
  * 注意: 当调用此方法时，又调用了prepareImages:endView会抛异常
  */
 + (instancetype)prepareImageURLList:(NSArray<NSString *> *)URLList
-                              pageTextList:(NSArray<NSString *> *)pageTextList
-                                   endView:(UIView *(^)(NSIndexPath *indexPath))endViewBlock;
+                       pageTextList:(NSArray<NSString *> *)pageTextList
+                            endView:(UIView *(^)(NSIndexPath *indexPath))endViewBlock;
 
 
 /**
@@ -32,7 +32,7 @@
  */
 + (instancetype)prepareImages:(NSArray<NSString*> *)images
                  pageTextList:(NSArray<NSString *> *)pageTextList
-                         endView:(UIView *(^)(NSIndexPath *indexPath))endViewBlock;
+                      endView:(UIView *(^)(NSIndexPath *indexPath))endViewBlock;
 
 /**
  *  显示图片浏览器
@@ -52,7 +52,7 @@
  * @return  endView  关闭图片浏览器时，动画结束在的视图，block回调了结束时的索引
  */
 - (XYImageBrowerView *)showWithImageURLList:(NSArray<NSString *> *)URLList
-                                    currentIndex:(NSInteger)currentIndex
+                               currentIndex:(NSInteger)currentIndex
                                    fromView:(UIView *)fromView
                                     endView:(UIView *(^)(NSIndexPath *indexPath))endViewBlock;
 

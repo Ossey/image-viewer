@@ -61,8 +61,8 @@
 
 
 + (instancetype)prepareImageURLList:(NSArray<NSString *> *)URLList
-                              pageTextList:(NSArray<NSString *> *)pageTextList
-                               endView:(UIView *(^)(NSIndexPath *indexPath))endViewBlock {
+                       pageTextList:(NSArray<NSString *> *)pageTextList
+                            endView:(UIView *(^)(NSIndexPath *indexPath))endViewBlock {
     
     XYImageViewer *imageViewr = [XYImageViewer new];
     
@@ -87,7 +87,17 @@
     
     NSMutableArray *tempArrM = [NSMutableArray arrayWithCapacity:1];
     for (NSString *imageName in images) {
-        UIImage *image = [UIImage imageNamed:imageName];
+        UIImage *image = nil;
+        if ([imageName isKindOfClass:[NSString class]]) {
+            image = [UIImage imageNamed:imageName];
+            if (!image) {
+                image = [UIImage imageWithContentsOfFile:imageName];
+            }
+        } else if ([imageName isKindOfClass:[NSURL class]]) {
+            NSData *data = [NSData dataWithContentsOfURL:(NSURL *)imageName];
+            image = [UIImage imageWithData:data];
+        }
+      
         [tempArrM addObject:[NSValue valueWithCGSize:image.size]];
     }
     

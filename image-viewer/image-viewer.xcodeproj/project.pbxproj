@@ -34,7 +34,6 @@
 		180214541E1DF00A006605C2 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 180214431E1DF00A006605C2 /* UIImageView+WebCache.m */; };
 		180214551E1DF00A006605C2 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 180214451E1DF00A006605C2 /* UIView+WebCacheOperation.m */; };
 		18C861031E50C99500C615EA /* XYImageBrowerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C860FE1E50C99500C615EA /* XYImageBrowerView.m */; };
-		18C861041E50C99500C615EA /* XYImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C861001E50C99500C615EA /* XYImageView.m */; };
 		18C861051E50C99500C615EA /* XYImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C861021E50C99500C615EA /* XYImageViewer.m */; };
 /* End PBXBuildFile section */
 
@@ -90,8 +89,6 @@
 		180214451E1DF00A006605C2 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
 		18C860FD1E50C99500C615EA /* XYImageBrowerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYImageBrowerView.h; sourceTree = "<group>"; };
 		18C860FE1E50C99500C615EA /* XYImageBrowerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYImageBrowerView.m; sourceTree = "<group>"; };
-		18C860FF1E50C99500C615EA /* XYImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYImageView.h; sourceTree = "<group>"; };
-		18C861001E50C99500C615EA /* XYImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYImageView.m; sourceTree = "<group>"; };
 		18C861011E50C99500C615EA /* XYImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYImageViewer.h; sourceTree = "<group>"; };
 		18C861021E50C99500C615EA /* XYImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYImageViewer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -217,8 +214,6 @@
 			children = (
 				18C860FD1E50C99500C615EA /* XYImageBrowerView.h */,
 				18C860FE1E50C99500C615EA /* XYImageBrowerView.m */,
-				18C860FF1E50C99500C615EA /* XYImageView.h */,
-				18C861001E50C99500C615EA /* XYImageView.m */,
 				18C861011E50C99500C615EA /* XYImageViewer.h */,
 				18C861021E50C99500C615EA /* XYImageViewer.m */,
 			);
@@ -320,7 +315,6 @@
 				1802144F1E1DF00A006605C2 /* SDWebImagePrefetcher.m in Sources */,
 				180214551E1DF00A006605C2 /* UIView+WebCacheOperation.m in Sources */,
 				1802144C1E1DF00A006605C2 /* SDWebImageDownloader.m in Sources */,
-				18C861041E50C99500C615EA /* XYImageView.m in Sources */,
 				180214051E1DE6B1006605C2 /* AppDelegate.m in Sources */,
 				1802144B1E1DF00A006605C2 /* SDWebImageDecoder.m in Sources */,
 				180214471E1DF00A006605C2 /* README.md in Sources */,
